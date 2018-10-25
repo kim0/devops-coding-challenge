@@ -1,0 +1,31 @@
+Description: >
+    This template deploys an ECR repo with access per user policy
+
+Resources:
+
+  etrepo: 
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: "etrepo"
+      RepositoryPolicyText: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Sid: AllowPushPull
+            Effect: Allow
+            Principal: 
+              AWS: 
+                - "arn:aws:iam::293774736703:user/akamal"
+            Action: 
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
+              - "ecr:PutImage"
+              - "ecr:InitiateLayerUpload"
+              - "ecr:UploadLayerPart"
+              - "ecr:CompleteLayerUpload"
+Outputs:
+
+    etrepoARN:
+        Description: A reference to the ECR Repository
+        Value: !GetAtt etrepo.Arn
